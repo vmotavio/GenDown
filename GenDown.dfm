@@ -3400,6 +3400,7 @@ object Form1: TForm1
     Top = 112
   end
   object DataSource1: TDataSource
+    DataSet = FDTable1
     Left = 456
     Top = 144
   end
