@@ -29,7 +29,6 @@ type
     FDConnection1: TFDConnection;
     FDTable1: TFDTable;
     Button4: TButton;
-    Label3: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure IdHTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCount: Int64);
@@ -121,7 +120,8 @@ end;
 procedure TForm1.IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 begin
   ProgressBar1.Position := ProgressBar1.Max;
-  Label1.Caption := 'Download Concluído!';
+  Label1.Caption := 'Download Encerrado!';
+  FDConnection1.ExecSQL('UPDATE LOGDOWNLOAD SET DATAFIM = datetime("now") WHERE CODIGO = (SELECT MAX(CODIGO) FROM LOGDOWNLOAD)');
 end;
 
 { DownloadThread }

@@ -14,9 +14,7 @@ uses
 type
   TForm2 = class(TForm)
     DBGrid1: TDBGrid;
-    DataSource1: TDataSource;
-    FDConnection1: TFDConnection;
-    FDTable1: TFDTable;
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -29,5 +27,10 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm2.FormCreate(Sender: TObject);
+begin
+  DBGrid1.Enabled;
+end;
 
 end.
