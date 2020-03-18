@@ -38,7 +38,6 @@ type
     procedure Button2Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Button3Click(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
     procedure Button4Click(Sender: TObject);
 
   private
@@ -63,38 +62,33 @@ implementation
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  SaveDialog1.Execute();
-  DownloadThread.Create(Edit1.Text, SaveDialog1.FileName);
+  SaveDialog1.Execute(); // Abre uma tela para o usuário selecionar o local e nome do arquivo para o Download
+  DownloadThread.Create(Edit1.Text, SaveDialog1.FileName);  //Cria a Thread Download passando a URL e o Endereço do Arquivo + Nome do Arquivo escolhido pelo usuário
 end;
 procedure TForm1.Button2Click(Sender: TObject);
 begin
-  idHTTP1.Disconnect;
+  idHTTP1.Disconnect;  //Para o Download caso o usuário clique no botão de Parar o Download
 end;
 
 procedure TForm1.Button3Click(Sender: TObject);
 begin
-  form2.Show;
+  form2.Show; //Exibe o form2 que contém os dados do banco
 end;
 
 procedure TForm1.Button4Click(Sender: TObject);
 begin
-  Label2.Show;
-end;
-
-procedure TForm1.FormActivate(Sender: TObject);
-begin
-  Label2.Hide;
+  Label2.Show; //Apresenta a porcentagem do Download para o usuário
 end;
 
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if idHTTP1.Connected then
+  if idHTTP1.Connected then // Se estiver fazendo o Download e Clicarem no botão de fechar janela.
   begin
-    if MessageDlg('Existe um Download em andamento.  Deseja sair?',
+    if MessageDlg('Existe um Download em andamento.  Deseja sair?', //Pergunta se deseja sair
       mtConfirmation, [mbYes, mbNo], 0, mbNo) = mrNo then
-      begin
-        idHTTP1.Disconnect;
-        Close;
+      begin  // Se o retorno for Yes
+        idHTTP1.Disconnect; //Encerra o Download
+        Close; //Fecha a aplicação
       end;
   end;
   end;
@@ -103,34 +97,34 @@ procedure TForm1.IdHTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCount: Int64);
   var x : Double;
 begin
-  ProgressBar1.Position := AWorkCount;
-  x:=AWorkCount*100/ProgressBar1.Max;
-  Label2.Caption:=FloatToStrF(x,ffNumber,3,0)+' %';
+  ProgressBar1.Position := AWorkCount; // Captura o progresso do Download e repassa para o ProgressBar1
+  x:=AWorkCount*100/ProgressBar1.Max; // Calcula a porcentagem do Download
+  Label2.Caption:=FloatToStrF(x,ffNumber,3,0)+' %'; //Formata o Double para imprimir apenas casas depois da vírgula
 end;
 
 procedure TForm1.IdHTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCountMax: Int64);
 begin
-  ProgressBar1.Position := 0;
-  ProgressBar1.Max := AWorkCountMax;
-  Label1.caption := 'Download em andamento...';
-  FDConnection1.ExecSQL('INSERT INTO LOGDOWNLOAD (URL,DATAINICIO) VALUES ("'+Edit1.Text+'",datetime("now"));');
+  ProgressBar1.Position := 0; //Inicializa o ProgressBar1 com 0
+  ProgressBar1.Max := AWorkCountMax; //Define o valor máximo de acordo com o tamanho do arquivo
+  Label1.caption := 'Download em andamento...'; //Exibe Download em andamento no Label1
+  FDConnection1.ExecSQL('INSERT INTO LOGDOWNLOAD (URL,DATAINICIO) VALUES ("'+Edit1.Text+'",datetime("now"));');//Faz a inserção no banco de dados com o início do Download
 end;
 
 procedure TForm1.IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 begin
-  ProgressBar1.Position := ProgressBar1.Max;
-  Label1.Caption := 'Download Encerrado!';
-  FDConnection1.ExecSQL('UPDATE LOGDOWNLOAD SET DATAFIM = datetime("now") WHERE CODIGO = (SELECT MAX(CODIGO) FROM LOGDOWNLOAD)');
+  ProgressBar1.Position := ProgressBar1.Max; //Preenche a barra até o final
+  Label1.Caption := 'Download Encerrado!'; //Informa que foi encerrado o Download
+  FDConnection1.ExecSQL('UPDATE LOGDOWNLOAD SET DATAFIM = datetime("now") WHERE CODIGO = (SELECT MAX(CODIGO) FROM LOGDOWNLOAD)');//Atualiza a última linha da tabela com a data hora fim do Download
 end;
 
 { DownloadThread }
 
 constructor DownloadThread.Create (URL, fileName : string);
 begin
-  inherited Create(false);
-  self.URL := URL;
-  self.fileName := fileName;
+  inherited Create(false); //Não herdar a função Create
+  self.URL := URL; //Definindo a variável URL da Thread
+  self.fileName := fileName; //Definindo a variável fileName da Thread
 end;
 
 procedure DownloadThread.Execute;
@@ -139,14 +133,14 @@ var
 
 begin
   try
-    downFile := TFileStream.Create(self.fileName, fmCreate);
+    downFile := TFileStream.Create(self.fileName, fmCreate); //Variável recebe o arquivo criado de acordo como o usuário desejou
   finally
 
   end;
   try
-    Form1.IdHTTP1.Get(self.URL, downFile);
+    Form1.IdHTTP1.Get(self.URL, downFile); //Faz efetivamente o Download do arquivo
   finally
-    downFile.Free;
+    downFile.Free; //Libera a memória da variável
   end;
 end;
 

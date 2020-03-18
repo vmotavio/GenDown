@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Gerenciador de Downloads'
-  ClientHeight = 191
+  ClientHeight = 167
   ClientWidth = 617
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -3307,16 +3307,16 @@ object Form1: TForm1
     40000001800000000000000000000000030000C0070000F00F0000F81F0000FF
     FF0000}
   OldCreateOrder = False
-  OnActivate = FormActivate
   OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
     Left = 64
-    Top = 140
+    Top = 146
     Width = 17
     Height = 13
     Caption = '0%'
+    Visible = False
   end
   object Label1: TLabel
     Left = 24
