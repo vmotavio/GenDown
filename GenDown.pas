@@ -11,7 +11,7 @@ uses
   FireDAC.Phys, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.ExtCtrls, Vcl.DBCtrls, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs;
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, Unit2;
 
 type
   TForm1 = class(TForm)
@@ -22,12 +22,11 @@ type
     Label2: TLabel;
     SaveDialog1: TSaveDialog;
     DataSource1: TDataSource;
-    FDConnection1: TFDConnection;
-    FDTable1: TFDTable;
-    DBGrid1: TDBGrid;
     Label1: TLabel;
     Button2: TButton;
     Button3: TButton;
+    FDConnection1: TFDConnection;
+    FDTable1: TFDTable;
     procedure Button1Click(Sender: TObject);
     procedure IdHTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCount: Int64);
@@ -36,6 +35,7 @@ type
     procedure IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
     procedure Button2Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,6 +66,11 @@ begin
   idHTTP1.Disconnect;
 end;
 
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  form2.Show;
+end;
+
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if idHTTP1.Connected then
@@ -91,6 +96,7 @@ end;
 procedure TForm1.IdHTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCountMax: Int64);
 begin
+  FDTable1;
   ProgressBar1.Position := 0;
   ProgressBar1.Max := AWorkCountMax;
   Label1.caption := 'Download em andamento...';

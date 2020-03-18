@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Gerenciador de Downloads'
-  ClientHeight = 133
+  ClientHeight = 233
   ClientWidth = 624
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -24,7 +24,7 @@ object Form1: TForm1
   object Label1: TLabel
     Left = 24
     Top = 79
-    Width = 129
+    Width = 3
     Height = 13
   end
   object Edit1: TEdit
@@ -51,35 +51,23 @@ object Form1: TForm1
     Height = 17
     TabOrder = 2
   end
-  object DBGrid1: TDBGrid
-    Left = 24
-    Top = 148
-    Width = 577
-    Height = 120
-    DataSource = DataSource1
-    TabOrder = 3
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clWindowText
-    TitleFont.Height = -11
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = []
-  end
   object Button2: TButton
     Left = 512
     Top = 74
     Width = 89
     Height = 25
     Caption = 'Parar Download'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 199
+    Left = 167
     Top = 101
-    Width = 89
+    Width = 154
     Height = 25
-    Caption = 'Exibir Download'
-    TabOrder = 5
+    Caption = 'Exibir Hist'#243'rico de Download'
+    TabOrder = 4
+    OnClick = Button3Click
   end
   object IdHTTP1: TIdHTTP
     OnWork = IdHTTP1Work
@@ -99,33 +87,30 @@ object Form1: TForm1
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
     Left = 24
-    Top = 240
+    Top = 104
   end
   object SaveDialog1: TSaveDialog
-    Left = 64
-    Top = 240
+    Left = 80
+    Top = 104
   end
   object DataSource1: TDataSource
-    DataSet = FDTable1
-    Left = 136
-    Top = 240
+    Left = 168
+    Top = 136
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
       'Database=C:\Users\otavio\Desktop\GenDown\banco.db'
       'LockingMode=Normal'
       'DriverID=sQLite')
-    Connected = True
-    Left = 224
-    Top = 240
+    Left = 288
+    Top = 136
   end
   object FDTable1: TFDTable
-    Active = True
     IndexFieldNames = 'CODIGO'
     Connection = FDConnection1
     UpdateOptions.UpdateTableName = 'LOGDOWNLOAD'
     TableName = 'LOGDOWNLOAD'
-    Left = 184
-    Top = 240
+    Left = 224
+    Top = 136
   end
 end
