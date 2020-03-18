@@ -1,0 +1,73 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Gerenciador de Downloads'
+  ClientHeight = 359
+  ClientWidth = 669
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label1: TLabel
+    Left = 48
+    Top = 112
+    Width = 473
+    Height = 13
+  end
+  object Label2: TLabel
+    Left = 562
+    Top = 79
+    Width = 23
+    Height = 13
+    Caption = '10%'
+  end
+  object Edit1: TEdit
+    Left = 48
+    Top = 40
+    Width = 473
+    Height = 21
+    TabOrder = 0
+    Text = 'Digite a URL do arquivo'
+  end
+  object Button1: TButton
+    Left = 536
+    Top = 38
+    Width = 75
+    Height = 23
+    Caption = 'Baixar'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object ProgressBar1: TProgressBar
+    Left = 48
+    Top = 75
+    Width = 473
+    Height = 17
+    TabOrder = 2
+  end
+  object IdHTTP1: TIdHTTP
+    OnWork = IdHTTP1Work
+    OnWorkBegin = IdHTTP1WorkBegin
+    OnWorkEnd = IdHTTP1WorkEnd
+    AllowCookies = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 544
+    Top = 136
+  end
+end

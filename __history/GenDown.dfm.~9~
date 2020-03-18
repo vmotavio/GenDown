@@ -1,0 +1,112 @@
+object Form1: TForm1
+  Left = 0
+  Top = 0
+  Caption = 'Gerenciador de Downloads'
+  ClientHeight = 284
+  ClientWidth = 614
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Label2: TLabel
+    Left = 535
+    Top = 51
+    Width = 3
+    Height = 13
+  end
+  object Label1: TLabel
+    Left = 24
+    Top = 72
+    Width = 3
+    Height = 13
+  end
+  object Edit1: TEdit
+    Left = 24
+    Top = 24
+    Width = 473
+    Height = 21
+    TabOrder = 0
+    Text = 'Digite a URL do arquivo'
+  end
+  object Button1: TButton
+    Left = 510
+    Top = 22
+    Width = 96
+    Height = 23
+    Caption = 'Iniciar Download'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object ProgressBar1: TProgressBar
+    Left = 24
+    Top = 51
+    Width = 473
+    Height = 17
+    TabOrder = 2
+  end
+  object DBGrid1: TDBGrid
+    Left = 24
+    Top = 99
+    Width = 473
+    Height = 120
+    DataSource = DataSource1
+    TabOrder = 3
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+  end
+  object IdHTTP1: TIdHTTP
+    OnWork = IdHTTP1Work
+    OnWorkBegin = IdHTTP1WorkBegin
+    OnWorkEnd = IdHTTP1WorkEnd
+    AllowCookies = True
+    ProxyParams.BasicAuthentication = False
+    ProxyParams.ProxyPort = 0
+    Request.ContentLength = -1
+    Request.ContentRangeEnd = -1
+    Request.ContentRangeStart = -1
+    Request.ContentRangeInstanceLength = -1
+    Request.Accept = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+    Request.BasicAuthentication = False
+    Request.UserAgent = 'Mozilla/3.0 (compatible; Indy Library)'
+    Request.Ranges.Units = 'bytes'
+    Request.Ranges = <>
+    HTTPOptions = [hoForceEncodeParams]
+    Left = 72
+    Top = 232
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 24
+    Top = 232
+  end
+  object DataSource1: TDataSource
+    DataSet = FDTable1
+    Left = 216
+    Top = 232
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'Database=C:\Users\otavio\Desktop\GenDown\banco.db'
+      'LockingMode=Normal'
+      'DriverID=sQLite')
+    Connected = True
+    Left = 328
+    Top = 232
+  end
+  object FDTable1: TFDTable
+    Active = True
+    IndexFieldNames = 'CODIGO'
+    Connection = FDConnection1
+    UpdateOptions.UpdateTableName = 'LOGDOWNLOAD'
+    TableName = 'LOGDOWNLOAD'
+    Left = 272
+    Top = 232
+  end
+end
