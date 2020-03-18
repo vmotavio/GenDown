@@ -39,6 +39,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
 
   private
     { Private declarations }
@@ -62,8 +63,14 @@ implementation
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  SaveDialog1.Execute(); // Abre uma tela para o usuário selecionar o local e nome do arquivo para o Download
-  DownloadThread.Create(Edit1.Text, SaveDialog1.FileName);  //Cria a Thread Download passando a URL e o Endereço do Arquivo + Nome do Arquivo escolhido pelo usuário
+  if ((Edit1.Text = '') or (Edit1.Text = 'Digite a URL do arquivo')) then
+  begin
+     ShowMessage('Digite uma URL'); //Mensagem de Erro caso não coloquem uma URL no campo
+  end
+  else begin
+    SaveDialog1.Execute(); // Abre uma tela para o usuário selecionar o local e nome do arquivo para o Download
+    DownloadThread.Create(Edit1.Text, SaveDialog1.FileName);  //Cria a Thread Download passando a URL e o Endereço do Arquivo + Nome do Arquivo escolhido pelo usuário
+  end;
 end;
 procedure TForm1.Button2Click(Sender: TObject);
 begin
@@ -93,6 +100,17 @@ begin
   end;
   end;
 
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  try
+    FDConnection1.Params.Values['Database'] := GetCurrentDir +'\..\..\banco.db'; // Captura a pasta do executável para criar o caminho do banco de dados
+    FDConnection1.Connected:=True; //Faz a conexão com o banco
+    FDTable1.Active:=True; //Ativa a tabela
+  except
+    ShowMessage('Erro na comunicação com o banco de dados!'); //Mensagem de Erro de conexão com o banco
+  end;
+end;
+
 procedure TForm1.IdHTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCount: Int64);
   var x : Double;
@@ -115,7 +133,11 @@ procedure TForm1.IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 begin
   ProgressBar1.Position := ProgressBar1.Max; //Preenche a barra até o final
   Label1.Caption := 'Download Encerrado!'; //Informa que foi encerrado o Download
-  FDConnection1.ExecSQL('UPDATE LOGDOWNLOAD SET DATAFIM = datetime("now") WHERE CODIGO = (SELECT MAX(CODIGO) FROM LOGDOWNLOAD)');//Atualiza a última linha da tabela com a data hora fim do Download
+  try
+    FDConnection1.ExecSQL('UPDATE LOGDOWNLOAD SET DATAFIM = datetime("now") WHERE CODIGO = (SELECT MAX(CODIGO) FROM LOGDOWNLOAD)');//Atualiza a última linha da tabela com a data hora fim do Download
+  except
+    ShowMessage('Erro na inserção de dados no banco!'); //Mensagem de Erro no UPDATE
+  end;
 end;
 
 { DownloadThread }
@@ -132,16 +154,13 @@ var
   downFile: TFileStream;
 
 begin
-  try
-    downFile := TFileStream.Create(self.fileName, fmCreate); //Variável recebe o arquivo criado de acordo como o usuário desejou
-  finally
-
-  end;
+  downFile := TFileStream.Create(self.fileName, fmCreate); //Variável recebe o arquivo criado de acordo como o usuário desejou
   try
     Form1.IdHTTP1.Get(self.URL, downFile); //Faz efetivamente o Download do arquivo
-  finally
-    downFile.Free; //Libera a memória da variável
-  end;
+   except
+    ShowMessage('Erro no Download do Arquivo!'); //Mensagem de Erro no Download do Arquivo
+   end;
+   downFile.Free; //Libera a memória da variável
 end;
 
 end.

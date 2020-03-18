@@ -2,7 +2,7 @@ object Form1: TForm1
   Left = 0
   Top = 0
   Caption = 'Gerenciador de Downloads'
-  ClientHeight = 167
+  ClientHeight = 145
   ClientWidth = 617
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -3308,11 +3308,12 @@ object Form1: TForm1
     FF0000}
   OldCreateOrder = False
   OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Label2: TLabel
-    Left = 64
-    Top = 146
+    Left = 144
+    Top = 114
     Width = 17
     Height = 13
     Caption = '0%'
@@ -3392,34 +3393,31 @@ object Form1: TForm1
     Request.Ranges.Units = 'bytes'
     Request.Ranges = <>
     HTTPOptions = [hoForceEncodeParams]
-    Left = 144
-    Top = 112
+    Left = 256
+    Top = 104
   end
   object SaveDialog1: TSaveDialog
-    Left = 192
-    Top = 112
+    Left = 296
+    Top = 104
   end
   object DataSource1: TDataSource
     DataSet = FDTable1
-    Left = 456
-    Top = 144
+    Left = 568
+    Top = 104
   end
   object FDConnection1: TFDConnection
     Params.Strings = (
-      'Database=C:\Users\otavio\Desktop\GenDown\banco.db'
       'LockingMode=Normal'
       'DriverID=sQLite')
-    Connected = True
-    Left = 344
-    Top = 144
+    Left = 504
+    Top = 104
   end
   object FDTable1: TFDTable
-    Active = True
     IndexFieldNames = 'CODIGO'
     Connection = FDConnection1
     UpdateOptions.UpdateTableName = 'LOGDOWNLOAD'
     TableName = 'LOGDOWNLOAD'
-    Left = 400
-    Top = 144
+    Left = 536
+    Top = 104
   end
 end
