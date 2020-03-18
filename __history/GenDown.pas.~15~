@@ -111,7 +111,8 @@ end;
 procedure TForm1.IdHTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCountMax: Int64);
 begin
-  //FDConnection1.ExecSQL('insert into LOGDOWNLOAD values (,'+ Label1.Caption +','+ DateToStr(Now) +')');
+  Label1.Caption:=DateToStr(Now);
+  // FDConnection1.ExecSQL('insert into LOGDOWNLOAD values (,'+ Label1.Caption +','+ DateToStr(Now) +',);');
   ProgressBar1.Position := 0;
   ProgressBar1.Max := AWorkCountMax;
   Label1.caption := 'Download em andamento...';
@@ -120,7 +121,7 @@ end;
 procedure TForm1.IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 begin
   ProgressBar1.Position := ProgressBar1.Max;
-  Label1.caption := 'Download ConcluÃ­do!';
+  Label1.caption := 'Download Concluído!';
 end;
 
 { DownloadThread }

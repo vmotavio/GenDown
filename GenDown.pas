@@ -11,7 +11,8 @@ uses
   FireDAC.Phys, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
   FireDAC.DApt.Intf, FireDAC.DApt, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.ExtCtrls, Vcl.DBCtrls, FireDAC.Comp.DataSet, FireDAC.Comp.Client,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, Unit2;
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, Unit2,
+  IdAuthentication;
 
 type
   TForm1 = class(TForm)
@@ -27,6 +28,8 @@ type
     Button3: TButton;
     FDConnection1: TFDConnection;
     FDTable1: TFDTable;
+    Button4: TButton;
+    Label3: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure IdHTTP1Work(ASender: TObject; AWorkMode: TWorkMode;
       AWorkCount: Int64);
@@ -36,6 +39,9 @@ type
     procedure Button2Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure Button3Click(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+
   private
     { Private declarations }
   public
@@ -71,6 +77,16 @@ begin
   form2.Show;
 end;
 
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+  Label2.Show;
+end;
+
+procedure TForm1.FormActivate(Sender: TObject);
+begin
+  Label2.Hide;
+end;
+
 procedure TForm1.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
   if idHTTP1.Connected then
@@ -96,16 +112,16 @@ end;
 procedure TForm1.IdHTTP1WorkBegin(ASender: TObject; AWorkMode: TWorkMode;
   AWorkCountMax: Int64);
 begin
-  FDTable1;
   ProgressBar1.Position := 0;
   ProgressBar1.Max := AWorkCountMax;
   Label1.caption := 'Download em andamento...';
+  FDConnection1.ExecSQL('INSERT INTO LOGDOWNLOAD (URL,DATAINICIO) VALUES ("'+Edit1.Text+'",datetime("now"));');
 end;
 
 procedure TForm1.IdHTTP1WorkEnd(ASender: TObject; AWorkMode: TWorkMode);
 begin
   ProgressBar1.Position := ProgressBar1.Max;
-  Label1.caption := 'Download Concluído!';
+  Label1.Caption := 'Download Concluído!';
 end;
 
 { DownloadThread }
