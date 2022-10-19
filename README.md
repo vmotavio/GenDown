@@ -1,5 +1,5 @@
 # GenDown
-Gerenciador de Downloads em Delphi (PROVA)
+Gerenciador de Downloads em Delphi (Prova Softplan)
 
 Desafio de implementar um Gerenciador de Downloads com as funcionalidades descritas abaixo:
 
